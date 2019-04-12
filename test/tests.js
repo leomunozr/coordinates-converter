@@ -41,12 +41,15 @@ describe('Convert from DMS to DD', function () {
       
       expect(parsedDms).to.deep.equal(expectedDms);
     });
+  });
+
+  describe('Coordinates conversion', function () {
 
     it('should convert coords successfully', function () {
       const coordString = '19 22 45.5 N 99 08 14.9W';
       const convertedDd = new Coordinate(coordString).toDd();
 
       expect(convertedDd).to.eql(expectedDd);
-    })
-  });
+    });
+  })
 });
