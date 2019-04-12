@@ -31,9 +31,14 @@ Coordinate.prototype.toDd = function () {
   return [this.latitude, this.longitude]
     .map(dms => {
       const { degrees, minutes, seconds } = dms;
-      const sum = parseInt(degrees) +
+      let sum = parseInt(degrees) +
         parseInt(minutes) / 60 +
         parseFloat(seconds) / 3600;
+      
+      if (dms.orientation.match(/[SW]/)) {
+        sum *= -1;
+      }
+        
       return parseFloat(sum.toFixed(6));
     });
 }
@@ -42,15 +47,7 @@ const parseCoordinate = (coordinateString) => {
   // 1. Validar el formato
   // 19 25 35.85S    099 12 07.48W
   // o 19°25'35.85''N  099 12 07.48W
-
-  // separar latitud de longitud a partir de N o S, incluyendo la letra
-  // la latitud y longitud pueden estar separados por una coma o por espacio
   
-  // separado con espacios
-  // separado con grados, minutos y segundos
-  // validar N o S, E o W
-  
-  // Dividir la parte latitud de la longitud
   const [lat, [latDir], long, [longDir]] = coordinateString
     .split(/([NSEW])/g)
     .filter(num => num)
@@ -59,12 +56,16 @@ const parseCoordinate = (coordinateString) => {
       .split(/[ °'"]/)
       .filter(a => a));
 
-  const latitude = new DMS(parseInt(lat[0]),
+  const latitude = new DMS(
+    parseInt(lat[0]),
     parseInt(lat[1]),
-    parseFloat(lat[2]), latDir);
-  const longitude = new DMS(parseInt(long[0]),
+    parseFloat(lat[2]),
+    latDir);
+  const longitude = new DMS(
+    parseInt(long[0]),
     parseInt(long[1]),
-    parseFloat(long[2]), longDir);
+    parseFloat(long[2]),
+    longDir);
 
   return { latitude, longitude };
 }
