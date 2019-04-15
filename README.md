@@ -40,3 +40,8 @@ To convert format we use function `.toDd()`:
 ````js
 coordWithSpaces.toDd() // [ 19.432583, -99.133194 ]
 ````
+
+It also supports conversion to GeoJSON format, which has the order of latitude and longitude inversed for a coordinate.
+```js
+coordWithSpaces.toGeoJson() // [-99.133194, 19.432583]
+````

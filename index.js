@@ -43,6 +43,10 @@ Coordinate.prototype.toDd = function () {
     });
 }
 
+Coordinate.prototype.toGeoJson = function () {
+  return this.toDd().reverse();
+}
+
 const parseCoordinate = (coordinateString) => {
   // 1. Validar el formato
   // 19 25 35.85S    099 12 07.48W
